@@ -10,22 +10,24 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::middleware('guest')->group(function () {
-    Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
-    Route::post('/register', [AuthController::class, 'register'])->name('register.store');
-
-    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login.store');
-});
-
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
-
 Route::resource('categories', CategoryController::class);
 Route::resource('books', BookController::class);
-Route::resource('book-requests', BookRequestController::class);
 
-Route::get('/my-books', [BookController::class, 'myBooks'])->middleware('auth')->name('books.my');
-Route::get('/my-requests', [BookRequestController::class, 'myRequests'])->middleware('auth')->name('book-requests.my');
+Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.store');
 
-Route::post('/book-requests/{id}/approve', [BookRequestController::class, 'approve'])->name('book-requests.approve');
-Route::post('/book-requests/{id}/reject', [BookRequestController::class, 'reject'])->name('book-requests.reject');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.store');
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::middleware('auth')->group(function () {
+    Route::post('/books/{book}/request', [BookRequestController::class, 'store'])->name('book-requests.store');
+
+    Route::get('/book-requests', [BookRequestController::class, 'index'])->name('book-requests.index');
+    Route::post('/book-requests/{id}/approve', [BookRequestController::class, 'approve'])->name('book-requests.approve');
+    Route::post('/book-requests/{id}/reject', [BookRequestController::class, 'reject'])->name('book-requests.reject');
+
+    Route::get('/my-books', [BookController::class, 'myBooks'])->name('books.my');
+    Route::get('/my-requests', [BookRequestController::class, 'myRequests'])->name('book-requests.my');
+});
