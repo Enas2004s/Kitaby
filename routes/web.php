@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BookRequestController;
@@ -30,4 +30,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/my-books', [BookController::class, 'myBooks'])->name('books.my');
     Route::get('/my-requests', [BookRequestController::class, 'myRequests'])->name('book-requests.my');
+});
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 });
