@@ -135,6 +135,9 @@
             <a href="{{ route('books.index') }}">Books</a>
 
             @auth
+            @if(auth()->user()->is_admin == 1)
+                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+            @endif
                 <a href="{{ route('books.create') }}">Add Book</a>
                 <a href="{{ route('book-requests.index') }}">Book Requests</a>
                 <a href="{{ route('books.my') }}">My Books</a>
