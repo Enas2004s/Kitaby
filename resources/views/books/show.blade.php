@@ -207,7 +207,7 @@
                 @if($book->type == 'book')
                     @auth
                         @if(auth()->id() != $book->user_id)
-                            <form action="{{ route('book-requests.store') }}" method="POST" class="request-form-inline">
+                            <form action="{{ route('book-requests.store', $book->id) }}" method="POST" class="request-form-inline">
                                 @csrf
                                 <input type="hidden" name="book_id" value="{{ $book->id }}">
                                 <button type="submit" class="btn-main">Request Book</button>
